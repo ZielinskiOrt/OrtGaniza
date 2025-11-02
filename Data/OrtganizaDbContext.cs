@@ -19,5 +19,16 @@ namespace Data
 
         public DbSet<WebRole> WebRoles { get; set; }
 
+        public DbSet<Usuario> Usuarios { get; set; }
+
+        public DbSet<Tarea> Tareas { get; set; }
+        public DbSet<TareaColaborador> TareaColaborador { get; set; }
+
+        public DbSet<TareaSolicitudBaja> TareaSolicitudBaja { get; set; }
+
+        public DbSet<TareaTrace> TareaTrace { get; set; }
+
+        public DbSet<MiembroProyecto> MiembroProyecto { get; set; }
+
     }
 }

@@ -18,9 +18,9 @@ namespace OrtganizaPresentacion.Controllers
             return View();
         }
 
-        public string Privacy()
+        public IActionResult Privacy()
         {
-            return "EJEMPLO";
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -16,7 +16,7 @@ namespace Entities.Entities
         [StringLength(100)]
         public string Descripcion { get; set; }
         public DateTime FechaCreacion { get; set; }
-        public ICollection<MiembroProyecto> Miembros { get; set; } = new List<MiembroProyecto>();
-        public ICollection<Tarea> Tareas { get; set; } = new List<Tarea>();
+        public List<MiembroProyecto> Miembros { get; set; } = new List<MiembroProyecto>();
+        public List<Tarea> Tareas { get; set; } = new List<Tarea>();
     }
 }

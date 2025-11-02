@@ -36,8 +36,9 @@ namespace Entities.Entities
 
         [ForeignKey("WebRoleId")]
         public WebRole WebRole { get; set; }
-        public ICollection<MiembroProyecto> ProyectosAsignados { get; set; } = new List<MiembroProyecto>();
-        public ICollection<TareaColaborador> TareasComoColaborador { get; set; } = new List<TareaColaborador>();
-        public ICollection<TareaSolicitudBaja> SolicitudesBaja { get; set; } = new List<TareaSolicitudBaja>();
+        public List<MiembroProyecto> ProyectosAsignados { get; set; } = new List<MiembroProyecto>();
+        public List<TareaColaborador> TareasComoColaborador { get; set; } = new List<TareaColaborador>();
+        public List<TareaSolicitudBaja> SolicitudesBaja { get; set; } = new List<TareaSolicitudBaja>();
+        public List<TareaTrace> TareasTrace { get; set; } = new List<TareaTrace>();
     }
 }

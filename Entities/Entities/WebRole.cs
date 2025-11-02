@@ -18,7 +18,7 @@ namespace Entities.Entities
         [Required]
         [StringLength(100)]
         public string Descripcion { get; set; }
-        public ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
+        public List<Usuario> Usuarios { get; set; } = new List<Usuario>();
     }
 
 }

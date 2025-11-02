@@ -33,8 +33,8 @@ namespace Entities.Entities
 
         [ForeignKey("ProyectoId")]
         public Proyecto Proyecto { get; set; }
-        public ICollection<TareaColaborador> Colaboradores { get; set; } = new List<TareaColaborador>();
-        public ICollection<TareaSolicitudBaja> SolicitudesBaja { get; set; } = new List<TareaSolicitudBaja>();
-        public ICollection<TareaTrace> TareasTrace { get; set; } = new List<TareaTrace>();
+        public List<TareaColaborador> Colaboradores { get; set; } = new List<TareaColaborador>();
+        public List<TareaSolicitudBaja> SolicitudesBaja { get; set; } = new List<TareaSolicitudBaja>();
+        public List<TareaTrace> TareasTrace { get; set; } = new List<TareaTrace>();
     }
 }

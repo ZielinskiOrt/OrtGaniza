@@ -21,7 +21,12 @@ namespace Entities.Entities
         [StringLength(500)]
         public string Comentarios { get; set; }
 
+        public Guid UserId { get; set; }
+
         [ForeignKey("TareaId")]
         public Tarea Tarea { get; set; }
+
+        [ForeignKey("UserId")]
+        public Usuario Usuario { get; set; }
     }
 }
