@@ -1,0 +1,117 @@
+﻿:root {
+    --bg: #eaf4ff;
+    --card: #fff;
+    --text: #0b2a4a;
+    --muted: #6b7a90;
+    --primary: #0d6efd;
+    --primary-dark: #0b56c4;
+    --ring: rgba(13,110,253,.25);
+    --border: #d0d7e2;
+}
+
+body {
+    background: var(--bg);
+}
+
+.registro-wrap {
+    max-width: 900px;
+    margin: 48px auto;
+    padding: 0 16px;
+}
+
+.registro-frame {
+    background: rgba(13,110,253,.07);
+    border-radius: 12px;
+    padding: 28px;
+}
+
+.registro-card {
+    max-width: 560px;
+    margin: 0 auto;
+    background: var(--card);
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,.05);
+    box-shadow: 0 12px 28px rgba(16,24,40,.10), 0 2px 6px rgba(16,24,40,.06);
+    padding: 28px;
+}
+
+.registro-title {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin: 6px 0 18px;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.form-control {
+    width: 100%;
+    height: 44px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: #0f172a;
+    padding: 8px 12px;
+}
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px var(--ring);
+    }
+
+.hint {
+    color: var(--muted);
+    font-size: .88rem;
+    margin-top: 6px;
+}
+
+.error-text {
+    color: #b42318;
+    font-size: .88rem;
+    margin-top: 6px;
+    display: none;
+}
+
+.mb-16 {
+    margin-bottom: 16px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.btn-row {
+    display: grid;
+}
+
+.btn-primary {
+    height: 46px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: linear-gradient(180deg,var(--primary),var(--primary-dark));
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: .2px;
+}
+
+    .btn-primary:focus-visible {
+        outline: 4px solid var(--ring);
+        outline-offset: 2px;
+    }
+
+@media (max-width:576px) {
+    .registro-card {
+        padding: 22px;
+    }
+
+    .registro-title {
+        font-size: 1.4rem;
+    }
+}

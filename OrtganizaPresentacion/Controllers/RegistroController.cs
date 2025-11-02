@@ -20,7 +20,7 @@ namespace OrtganizaPresentacion.Controllers
         // GET: RegistroController/Create
         public ActionResult Create()
         {
-            return View();
+            return View("Crear");
         }
 
         // POST: RegistroController/Create

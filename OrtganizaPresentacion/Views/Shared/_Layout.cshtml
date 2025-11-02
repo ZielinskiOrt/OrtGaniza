@@ -6,7 +6,9 @@
     <title>@ViewData["Title"] - OrtganizaPresentacion</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/registro.css" />
     <link rel="stylesheet" href="~/OrtganizaPresentacion.styles.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <header>
@@ -27,6 +29,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="nasheee">NASHEEE</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Registro" asp-action="Create">Crear Cuenta</a>
                         </li>
                     </ul>
                 </div>
