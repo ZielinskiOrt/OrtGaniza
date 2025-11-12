@@ -9,46 +9,33 @@
             <h1 class="registro-title">Crear Cuenta</h1>
 
             <form id="formRegistro" novalidate>
-                <!-- Correo -->
                 <div class="mb-16">
                     <label for="email" class="form-label">Correo Electrónico</label>
                     <input type="email" id="email" class="form-control" placeholder="ejemplo@dominio.com" required />
                     <div class="error-text" id="emailError">Ingresá un correo válido.</div>
                 </div>
-
-                <!-- Repetir correo -->
                 <div class="mb-16">
                     <label for="email2" class="form-label">Repetir Correo Electrónico</label>
                     <input type="email" id="email2" class="form-control" placeholder="Confirma tu correo" required />
                     <div class="error-text" id="emailMatchError">Los correos no coinciden.</div>
                 </div>
-
-                <!-- Usuario -->
                 <div class="mb-16">
                     <label for="usuario" class="form-label">Nombre de Usuario</label>
                     <input type="text" id="usuario" class="form-control" placeholder="Nombre único" minlength="3" maxlength="30" required />
                 </div>
-
-                <!-- Nombre -->
                 <div class="mb-16">
                     <label for="nombre" class="form-label">Nombre</label>
                     <input type="text" id="nombre" class="form-control" placeholder="Tu nombre real" required />
                 </div>
-
-                <!-- Apellido -->
                 <div class="mb-16">
                     <label for="apellido" class="form-label">Apellido</label>
                     <input type="text" id="apellido" class="form-control" placeholder="Tu apellido" required />
                 </div>
-
-                <!-- Contraseña -->
                 <div class="mb-16">
                     <label for="pass" class="form-label">Contraseña</label>
                     <input type="password" id="pass" class="form-control" placeholder="Mínimo 8 caracteres" minlength="8" required />
                     <p class="hint">Mínimo 8 caracteres</p>
                 </div>
-
-                <!-- Repetir contraseña -->
                 <div class="mb-20">
                     <label for="pass2" class="form-label">Repetir Contraseña</label>
                     <input type="password" id="pass2" class="form-control" placeholder="Confirma tu contraseña" minlength="8" required />

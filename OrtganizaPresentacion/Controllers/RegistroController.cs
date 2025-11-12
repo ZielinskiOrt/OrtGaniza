@@ -11,12 +11,6 @@ namespace OrtganizaPresentacion.Controllers
             return View();
         }
 
-        // GET: RegistroController/Details/5
-        public ActionResult RegistrarAlumno()
-        {
-            return View();
-        }
-
         // GET: RegistroController/Create
         public ActionResult Create()
         {
