@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Business.DTO;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OrtganizaPresentacion.Models;
 
 namespace OrtganizaPresentacion.Controllers
 {
@@ -12,66 +14,18 @@ namespace OrtganizaPresentacion.Controllers
         }
 
         // GET: RegistroController/Create
-        public ActionResult Create()
+        public ActionResult Crear()
         {
             return View("Crear");
         }
 
-        // POST: RegistroController/Create
+        // GET: RegistroController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: RegistroController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Crear(CrearUsuarioModel crearRequestDTO)
         {
             return View();
         }
 
-        // POST: RegistroController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: RegistroController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: RegistroController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+      
     }
 }

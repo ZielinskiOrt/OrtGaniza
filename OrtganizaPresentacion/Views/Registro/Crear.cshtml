@@ -1,59 +1,65 @@
-﻿@{
+﻿@model CrearUsuarioModel
+@{
     ViewData["Title"] = "Crear Cuenta";
-    Layout = "_Layout";
 }
 
-<div class="registro-wrap">
-    <div class="registro-frame">
-        <div class="registro-card">
-            <h1 class="registro-title">Crear Cuenta</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    <h2 class="card-title text-center mb-4">@ViewData["Title"]</h2>
 
-            <form id="formRegistro" novalidate>
-                <div class="mb-16">
-                    <label for="email" class="form-label">Correo Electrónico</label>
-                    <input type="email" id="email" class="form-control" placeholder="ejemplo@dominio.com" required />
-                    <div class="error-text" id="emailError">Ingresá un correo válido.</div>
-                </div>
-                <div class="mb-16">
-                    <label for="email2" class="form-label">Repetir Correo Electrónico</label>
-                    <input type="email" id="email2" class="form-control" placeholder="Confirma tu correo" required />
-                    <div class="error-text" id="emailMatchError">Los correos no coinciden.</div>
-                </div>
-                <div class="mb-16">
-                    <label for="usuario" class="form-label">Nombre de Usuario</label>
-                    <input type="text" id="usuario" class="form-control" placeholder="Nombre único" minlength="3" maxlength="30" required />
-                </div>
-                <div class="mb-16">
-                    <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" id="nombre" class="form-control" placeholder="Tu nombre real" required />
-                </div>
-                <div class="mb-16">
-                    <label for="apellido" class="form-label">Apellido</label>
-                    <input type="text" id="apellido" class="form-control" placeholder="Tu apellido" required />
-                </div>
-                <div class="mb-16">
-                    <label for="pass" class="form-label">Contraseña</label>
-                    <input type="password" id="pass" class="form-control" placeholder="Mínimo 8 caracteres" minlength="8" required />
-                    <p class="hint">Mínimo 8 caracteres</p>
-                </div>
-                <div class="mb-20">
-                    <label for="pass2" class="form-label">Repetir Contraseña</label>
-                    <input type="password" id="pass2" class="form-control" placeholder="Confirma tu contraseña" minlength="8" required />
-                    <div class="error-text" id="passMatchError">Las contraseñas no coinciden.</div>
-                </div>
+                    <form asp-action="Crear" method="post" novalidate>
 
-                <div class="btn-row">
-                    <button type="submit" class="btn-primary">Registrarme</button>
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ConfirmEmail" class="form-label"></label>
+                            <input asp-for="ConfirmEmail" class="form-control" />
+                            <span asp-validation-for="ConfirmEmail" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Username" class="form-label"></label>
+                            <input asp-for="Username" class="form-control" />
+                            <span asp-validation-for="Username" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Nombre" class="form-label"></label>
+                            <input asp-for="Nombre" class="form-control" />
+                            <span asp-validation-for="Nombre" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Apellido" class="form-label"></label>
+                            <input asp-for="Apellido" class="form-control" />
+                            <span asp-validation-for="Apellido" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label"></label>
+                            <input asp-for="Password" class="form-control" type="password" />
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ConfirmPassword" class="form-label"></label>
+                            <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">Registrarme</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
-
-@section Styles {
-    <link rel="stylesheet" href="~/css/registro.css" />
-}
-
-@section Scripts {
-    <script src="~/js/registro.js"></script>
-}
