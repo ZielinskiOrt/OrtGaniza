@@ -18,7 +18,7 @@ namespace Business.Services
         }
         public UsuarioDTO Get(Guid id)
         {
-            this._usuariosRepository.Get(id);
+            return null;
         }
     }
 }

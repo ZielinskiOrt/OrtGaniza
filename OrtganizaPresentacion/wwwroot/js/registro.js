@@ -19,9 +19,14 @@
         show(emailMatchError, basicValid && email.value && email2.value && email.value !== email2.value);
         return basicValid && email.value === email2.value;
     }
+
     function checkPasswords() {
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,}$/;
+        const validPattern = regex.test(pass.value);
         show(passMatchError, pass.value && pass2.value && pass.value !== pass2.value);
-        return pass.value === pass2.value && pass.checkValidity() && pass2.checkValidity();
+        if (!validPattern) pass.setCustomValidity('Debe tener al menos una mayúscula, una minúscula y un carácter especial.');
+        else pass.setCustomValidity('');
+        return pass.value === pass2.value && validPattern;
     }
 
     ['input', 'blur'].forEach(evt => {
@@ -33,6 +38,6 @@
 
     form.addEventListener('submit', (e) => {
         const ok = form.checkValidity() && checkEmails() && checkPasswords();
-        if (!ok) e.preventDefault();  // front-only: no envía nada
+        if (!ok) e.preventDefault();
     });
 })();
