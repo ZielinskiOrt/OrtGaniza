@@ -37,6 +37,7 @@ namespace Data.Repositories
             try
             {
                 _db.Usuarios.Add(usuario);
+                _db.SaveChanges();
             }
             catch (Exception ex)
             {

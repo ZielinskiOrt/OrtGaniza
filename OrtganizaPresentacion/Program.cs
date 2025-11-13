@@ -3,21 +3,28 @@ using Data.Repositories.Interfaces;
 using Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using OrtganizaPresentacion.Filters;
+using Business.Services.Interfaces;
+using Business.Services;
+using Business;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<OrtganizaDbContext>(options =>
 {
-    // Obtener la cadena de conexión definida en appsettings.json
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+
+builder.Services.AddScoped<IWebRoleRepository, WebRoleRepository>();
 // Add services to the container.
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add(new ModelValidationFilter());
 });
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
