@@ -10,7 +10,7 @@ namespace Business.Services.Interfaces
     public interface IUsuarioService
     {
         UsuarioDTO Get(Guid id);
-
+        List<UsuarioDTO> GetAll();
         Guid CargarUsuario(UsuarioDTO usuarioDTO);
     }
 }

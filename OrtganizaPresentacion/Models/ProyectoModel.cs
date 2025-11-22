@@ -8,6 +8,6 @@
         public string PropietarioNombre{ get; set; }
         public int CantidadMiembros { get; set; }
         public bool LoginEsPropietario { get; set; }
-        public List<int> MiembrosIds { get; set; } = new List<int>();
+        public List<Guid> MiembrosIds { get; set; } = new List<Guid>();
     }
 }

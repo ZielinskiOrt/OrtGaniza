@@ -6,6 +6,7 @@ using OrtganizaPresentacion.Filters;
 using Business.Services.Interfaces;
 using Business.Services;
 using Business;
+using OrtganizaPresentacion;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +28,11 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add(new ModelValidationFilter());
 });
 
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAutoMapper(
+    typeof(MappingProfile).Assembly,
+    typeof(PresentacionMappingProfile).Assembly
+);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,4 +1,5 @@
-﻿using Business.Services;
+﻿using AutoMapper;
+using Business.Services;
 using Business.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using OrtganizaPresentacion.Models;
@@ -11,10 +12,12 @@ namespace OrtganizaPresentacion.Controllers
         private readonly ICookieService _cookieService;
         private readonly IUsuarioService _usuarioService;
         private const string MSG_ERROR_GENERAL = "Hubo un Error inesperado";
-        public ProyectoController(ICookieService cookieService, IUsuarioService usuarioService) { 
+        private readonly IMapper _mapper;
+        public ProyectoController(ICookieService cookieService, IUsuarioService usuarioService, IMapper mapper) { 
             this._cookieService = cookieService;
             this._usuarioService = usuarioService;
             this._userId = _cookieService.ObtenerUsuario();
+            this._mapper = mapper;
         }
 
         public ActionResult Index(Guid UserId)
@@ -22,6 +25,7 @@ namespace OrtganizaPresentacion.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult CrearProyecto()
         {
             ProyectoCrearModel model = new ProyectoCrearModel
@@ -33,7 +37,7 @@ namespace OrtganizaPresentacion.Controllers
             {
                 model.ProyectoModel.PropietarioUserId = this._userId.Value;
                 model.ProyectoModel.PropietarioNombre = _usuarioService.Get(this._userId.Value).Nombre;
-                model.UsuariosDisponibles = _usuarioService.Get();
+                model.UsuariosDisponibles = _mapper.Map<List<UsuarioModel>>(_usuarioService.GetAll());
             }
             catch (Exception ex)
             {
@@ -41,5 +45,27 @@ namespace OrtganizaPresentacion.Controllers
             }
             return View(model);
         }
+
+        [HttpPost]
+        public ActionResult CrearProyecto(ProyectoCrearModel proyectoCrearModel)
+        {
+            ProyectoCrearModel model = new ProyectoCrearModel
+            {
+                ProyectoModel = new ProyectoModel()
+            };
+
+            try
+            {
+                model.ProyectoModel.PropietarioUserId = this._userId.Value;
+                model.ProyectoModel.PropietarioNombre = _usuarioService.Get(this._userId.Value).Nombre;
+                model.UsuariosDisponibles = _mapper.Map<List<UsuarioModel>>(_usuarioService.GetAll());
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, MSG_ERROR_GENERAL);
+            }
+            return View(model);
+        }
+
     }
 }

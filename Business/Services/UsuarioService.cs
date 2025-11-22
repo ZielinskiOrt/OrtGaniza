@@ -49,5 +49,10 @@ namespace Business.Services
 
             return id;
         }
+
+        public List<UsuarioDTO> GetAll()
+        {
+            return _mapper.Map<List<UsuarioDTO>>(_usuariosRepository.GetAll());
+        }
     }
 }
