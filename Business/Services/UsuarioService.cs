@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Business.CustomExceptions;
 using Business.DTO;
 using Business.Services.Interfaces;
 using Data.Repositories.Interfaces;
@@ -16,6 +17,7 @@ namespace Business.Services
         private readonly IUsuarioRepository _usuariosRepository;
         private readonly IWebRoleRepository _webRoleRepository;
         private readonly IMapper _mapper;
+        private const string MSG_ERROR_INEXISTENTE = "Error el usuario ya existe";
         public UsuarioService(IUsuarioRepository usuarioRepository, IWebRoleRepository webRoleRepository, IMapper mapper) 
         {
             this._mapper = mapper;
@@ -24,24 +26,28 @@ namespace Business.Services
         }
         public UsuarioDTO Get(Guid id)
         {
-            return null;
+            return _mapper.Map<UsuarioDTO>(_usuariosRepository.Get(id));
         }
-        public bool CargarUsuario(UsuarioDTO usuarioDTO)
+        public Guid CargarUsuario(UsuarioDTO usuarioDTO)
         {
-            try
+            Guid id = Guid.Empty;
+       
+            if (!_usuariosRepository.Any(usuarioDTO.UserName, usuarioDTO.Email))
             {
+
                 usuarioDTO.WebRoleId = _webRoleRepository.GetPerfilUsuarioBasico();
                 usuarioDTO.LastLogin = DateTime.Now;
 
                 Usuario usuario = _mapper.Map<Usuario>(usuarioDTO);
 
-                _usuariosRepository.Insert(usuario);
+                id = _usuariosRepository.Insert(usuario);
             }
-            catch (Exception ex)
+            else
             {
-                return false;
+                throw new UserException(MSG_ERROR_INEXISTENTE);
             }
-            return true;
+
+            return id;
         }
     }
 }

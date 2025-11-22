@@ -27,22 +27,35 @@ namespace Data.Repositories
             return _db.Usuarios.Find(id);
         }
 
+        public Usuario Get(string userName, string email)
+        {
+            return _db.Usuarios.Where(u => u.UserName == userName || u.Email == email).FirstOrDefault();
+        }
+        public bool Any(string userName, string email)
+        {
+            return _db.Usuarios.Any(u => u.UserName == userName || u.Email == email);
+        }
+
         public List<Usuario> GetAll()
         {
             return _db.Usuarios.ToList();
         }
 
-        public void Insert(Usuario usuario)
+        public Guid Insert(Usuario usuario)
         {
             try
             {
                 _db.Usuarios.Add(usuario);
                 _db.SaveChanges();
+
+                return usuario.UserId;
             }
             catch (Exception ex)
             {
                 //despues poner logs
             }
+
+            return Guid.Empty;
         }
         public void InsertRange(List<Usuario> usuarios)
         {

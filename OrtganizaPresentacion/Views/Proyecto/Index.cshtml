@@ -1,0 +1,68 @@
+﻿@model List<ProyectoModel>
+@{
+    ViewData["Title"] = "Mis Proyectos";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-white p-4 d-flex justify-content-between align-items-center border-bottom-0">
+            <h2 class="card-title mb-0">@ViewData["Title"]</h2>
+            <a href="#" class="btn btn-primary btn-sm rounded-pill px-3">+ Crear Proyecto</a>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-borderless mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Nombre del Proyecto</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Propietario</th>
+                            <th scope="col">Miembros</th>
+                            <th scope="col">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (ProyectoModel proyecto in Model)
+                            {
+                                <tr>
+                                    <td>@proyecto.</td>
+                                    <td>@proyecto.Descripcion</td>
+                                    <td>
+                                        @if (proyecto.LoginEsPropietario)
+                                        {
+                                            <span class="fw-bold">Tú</span>
+                                            <span class="badge bg-secondary-subtle text-secondary">(Propietario)</span>
+                                        }
+                                        else
+                                        {
+                                            @proyecto.PropietarioNombre
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info-subtle text-info">@proyecto.CantidadMiembros</span>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="text-decoration-none">Ver Detalles</a>
+                                        <a href="#" class="text-secondary ms-2" aria-label="Editar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.105l-4 1a.5.5 0 0 1-.65-.65l1-4a.5.5 0 0 1 .105-.168l10-10zm.708 3l-3-3L1.92 12.062 1 15l2.938-.92zM11.5 5a.5.5 0 0 0-1 0v1h1z" />
+                                            </svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center py-4">No hay proyectos disponibles.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,5 @@
-﻿using Business.DTO;
+﻿using Business.CustomExceptions;
+using Business.DTO;
 using Business.Services.Interfaces;
 using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -10,9 +11,12 @@ namespace OrtganizaPresentacion.Controllers
     public class RegistroController : Controller
     {
         private readonly IUsuarioService _usuarioService;
-
-        public RegistroController(IUsuarioService usuarioService) { 
+        private readonly string _keyErrorUsuario = "ERROR_USUARIO_BACK";
+        private readonly string _error = "Error inesperado";
+        private readonly ICookieService _cookieService;
+        public RegistroController(IUsuarioService usuarioService, ICookieService cookieService) { 
             this._usuarioService = usuarioService;
+            this._cookieService = cookieService;
         }
         public ActionResult Index()
         {
@@ -37,10 +41,21 @@ namespace OrtganizaPresentacion.Controllers
                 PassWord = crearUsuarioModel.Password,
                 Email = crearUsuarioModel.Email,
             };
-
-            _usuarioService.CargarUsuario(usuarioDTO);
-
-            return RedirectToAction("Index");
+            try
+            {
+                Guid id = _usuarioService.CargarUsuario(usuarioDTO);
+                _cookieService.GuardarUsuario(id);
+                return RedirectToAction("index","Proyecto");
+            }
+            catch (UserException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+            catch (Exception ex) 
+            {
+                ModelState.AddModelError(string.Empty, _error);
+            }
+            return View(crearUsuarioModel);
 
         }
 
