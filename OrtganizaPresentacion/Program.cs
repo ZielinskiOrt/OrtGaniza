@@ -20,6 +20,8 @@ builder.Services.AddScoped<ICookieService, CookieService>();
 
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IProyectoService, ProyectoService>();
+builder.Services.AddScoped<IProyectoRepository, ProyectoRepository>();
 
 builder.Services.AddScoped<IWebRoleRepository, WebRoleRepository>();
 // Add services to the container.

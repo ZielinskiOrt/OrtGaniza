@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Business.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace OrtganizaPresentacion.Filters
@@ -17,6 +18,11 @@ namespace OrtganizaPresentacion.Filters
 
                 if (controller != null && model != null)
                 {
+                    if (controller is IViewDataRecargable recargable)
+                    {
+                        recargable.CargarViewData();
+                    }
+
                     context.Result = controller.View(model);
                 }
                 else

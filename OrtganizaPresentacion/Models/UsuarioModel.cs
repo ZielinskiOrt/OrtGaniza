@@ -8,8 +8,6 @@ namespace OrtganizaPresentacion.Models
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public string UserName { get; set; }
-        public string PassWord { get; set; }
-        public DateTime? LastLogin { get; set; }
         public string Email { get; set; }
         public Guid WebRoleId { get; set; }
     }

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Business.CustomExceptions;
+using Business.DTO;
 using Business.Services;
 using Business.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -6,18 +8,21 @@ using OrtganizaPresentacion.Models;
 
 namespace OrtganizaPresentacion.Controllers
 {
-    public class ProyectoController : Controller
+    public class ProyectoController : Controller , IViewDataRecargable
     {
         private readonly Guid? _userId;
         private readonly ICookieService _cookieService;
         private readonly IUsuarioService _usuarioService;
+        private readonly IProyectoService _proyectoService;
         private const string MSG_ERROR_GENERAL = "Hubo un Error inesperado";
+        private const string MSG_ERROR_MIEMBROS = "No se cargaron miembros";
         private readonly IMapper _mapper;
-        public ProyectoController(ICookieService cookieService, IUsuarioService usuarioService, IMapper mapper) { 
+        public ProyectoController(ICookieService cookieService, IUsuarioService usuarioService, IMapper mapper, IProyectoService proyectoService) { 
             this._cookieService = cookieService;
             this._usuarioService = usuarioService;
             this._userId = _cookieService.ObtenerUsuario();
             this._mapper = mapper;
+            this._proyectoService = proyectoService;
         }
 
         public ActionResult Index(Guid UserId)
@@ -28,16 +33,13 @@ namespace OrtganizaPresentacion.Controllers
         [HttpGet]
         public ActionResult CrearProyecto()
         {
-            ProyectoCrearModel model = new ProyectoCrearModel
-            {
-                ProyectoModel = new ProyectoModel()
-            };
+            ProyectoModel model = new ProyectoModel();
 
             try
             {
-                model.ProyectoModel.PropietarioUserId = this._userId.Value;
-                model.ProyectoModel.PropietarioNombre = _usuarioService.Get(this._userId.Value).Nombre;
-                model.UsuariosDisponibles = _mapper.Map<List<UsuarioModel>>(_usuarioService.GetAll());
+                model.UserId = this._userId.Value;
+                model.PropietarioNombre = _usuarioService.Get(this._userId.Value).Nombre;
+                ViewData["UsuariosDisponibles"] = _mapper.Map<List<UsuarioModel>>(_usuarioService.GetAll());
             }
             catch (Exception ex)
             {
@@ -47,25 +49,36 @@ namespace OrtganizaPresentacion.Controllers
         }
 
         [HttpPost]
-        public ActionResult CrearProyecto(ProyectoCrearModel proyectoCrearModel)
+        public ActionResult CrearProyecto(ProyectoModel proyectoModel)
         {
-            ProyectoCrearModel model = new ProyectoCrearModel
-            {
-                ProyectoModel = new ProyectoModel()
-            };
-
             try
             {
-                model.ProyectoModel.PropietarioUserId = this._userId.Value;
-                model.ProyectoModel.PropietarioNombre = _usuarioService.Get(this._userId.Value).Nombre;
-                model.UsuariosDisponibles = _mapper.Map<List<UsuarioModel>>(_usuarioService.GetAll());
+                if (proyectoModel.MiembrosIds.Count > 0)
+                {
+                    ProyectoDTO proyectoDTO = _mapper.Map<ProyectoDTO>(proyectoModel);
+                    _proyectoService.CargarProyecto(proyectoDTO);
+                }
+                else 
+                {
+                    throw new ProyectoException(MSG_ERROR_MIEMBROS);
+                }
+
+            }
+            catch (ProyectoException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, MSG_ERROR_GENERAL);
             }
-            return View(model);
+            ViewData["UsuariosDisponibles"] = _mapper.Map<List<UsuarioModel>>(_usuarioService.GetAll());
+            return View(proyectoModel);
         }
-
+        public void CargarViewData()
+        {
+            ViewData["UsuariosDisponibles"] =
+                _mapper.Map<List<UsuarioModel>>(_usuarioService.GetAll());
+        }
     }
 }

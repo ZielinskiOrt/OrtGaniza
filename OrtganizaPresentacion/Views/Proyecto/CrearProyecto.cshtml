@@ -1,13 +1,14 @@
-﻿@model ProyectoCrearModel
+﻿@model ProyectoModel
+@using Microsoft.AspNetCore.Mvc.Rendering
 @{
     ViewData["Title"] = "Crear Nuevo Proyecto";
-
+    List<UsuarioModel> usuariosDisponibles = ViewData["UsuariosDisponibles"] as List<UsuarioModel>;
     SelectList usuariosSelectList = new SelectList(
-         Model.UsuariosDisponibles,
+         usuariosDisponibles,
          "UserId",
-         "UserName",
-         Model.ProyectoModel.MiembrosIds
-     );
+         "UserName"
+    );
+
 }
 
 <div class="container py-5">
@@ -21,22 +22,32 @@
                         <i class="bi bi-folder-plus me-2"></i> @ViewData["Title"]
                     </h2>
 
-                    <form asp-action="Crear" method="post" novalidate>
+                    <form asp-action="CrearProyecto" method="post" novalidate id="formulario-crear-proyecto">
+
+                        <input type="hidden" asp-for="UserId" />
+
+                        <input type="hidden" asp-for="PropietarioNombre" />
 
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4" role="alert"></div>
 
                         <h4 class="mb-3 text-secondary">Detalles</h4>
 
                         <div class="mb-4">
-                            <label asp-for="ProyectoModel.Nombre" class="form-label fw-bold">Nombre del Proyecto</label>
-                            <input asp-for="ProyectoModel.Nombre" class="form-control form-control-lg" placeholder="EJ: Rediseño Web Principal" />
-                            <span asp-validation-for="ProyectoModel.Nombre" class="text-danger small"></span>
+                            <label asp-for="Nombre" class="form-label fw-bold">Nombre del Proyecto</label>
+                            <input asp-for="Nombre" class="form-control form-control-lg" id="txtNombre" placeholder="EJ: Rediseño Web Principal" />
+                            <span asp-validation-for="Nombre" class="text-danger small"></span>
+
+                            <small id="error-nombre-requerido" class="text-danger fw-bold" style="display:none;">El nombre es requerido.</small>
+                            <small id="error-nombre-largo" class="text-danger fw-bold" style="display:none;">Debe tener máximo 50 caracteres.</small>
                         </div>
 
                         <div class="mb-4">
-                            <label asp-for="ProyectoModel.Descripcion" class="form-label fw-bold">Descripción</label>
-                            <textarea asp-for="ProyectoModel.Descripcion" class="form-control" rows="4" placeholder="Breve resumen de los objetivos del proyecto."></textarea>
-                            <span asp-validation-for="ProyectoModel.Descripcion" class="text-danger small"></span>
+                            <label asp-for="Descripcion" class="form-label fw-bold">Descripción</label>
+                            <textarea asp-for="Descripcion" class="form-control" rows="4" id="txtDescripcion" placeholder="Breve resumen de los objetivos del proyecto."></textarea>
+                            <span asp-validation-for="Descripcion" class="text-danger small"></span>
+
+                            <small id="error-descripcion-requerida" class="text-danger fw-bold" style="display:none;">La descripción es requerida.</small>
+                            <small id="error-descripcion-largo" class="text-danger fw-bold" style="display:none;">Debe tener máximo 100 caracteres.</small>
                         </div>
 
                         <hr class="my-5">
@@ -47,16 +58,18 @@
                             <label class="form-label fw-bold d-block">Propietario del Proyecto</label>
                             <p class="mb-0 text-dark">
                                 <i class="bi bi-person-fill me-1"></i>
-                                @Model.ProyectoModel.PropietarioNombre (Tú)
+                                @Model.PropietarioNombre (Tú)
                             </p>
                         </div>
 
                         <div class="mb-4">
-                            <label asp-for="ProyectoModel.MiembrosIds" class="form-label fw-bold">Miembros del Equipo</label>
+                            <label asp-for="MiembrosIds" class="form-label fw-bold">Miembros del Equipo</label>
 
-                            <select **multiple** asp-for="ProyectoModel.MiembrosIds" asp-items="usuariosSelectList" class="form-select form-control-lg" data-placeholder="Selecciona uno o más miembros..."></select>
+                            <select multiple asp-for="MiembrosIds" asp-items="usuariosSelectList" class="form-select form-control-lg" data-placeholder="Selecciona uno o más miembros..." id="selectMiembros"></select>
 
-                            <span asp-validation-for="ProyectoModel.MiembrosIds" class="text-danger small"></span>
+                            <span asp-validation-for="MiembrosIds" class="text-danger small"></span>
+
+                            <small id="error-miembros-requeridos" class="text-danger fw-bold" style="display:none;">Debes seleccionar al menos un miembro del equipo.</small>
                         </div>
 
                         <div class="d-grid mt-5">
@@ -72,5 +85,7 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/validaciones-crear.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="~/js/crear-proyecto.js"></script>
 }

@@ -6,6 +6,7 @@
     $('#txtEmail').on('input blur', function () {
         let val = $(this).val().trim();
 
+        $('span[data-valmsg-for="Email"]').empty();
         $('#error-email-requerido').hide();
         $('#error-email-formato').hide();
 
@@ -22,6 +23,7 @@
         let val = $(this).val().trim();
         let original = $('#txtEmail').val().trim();
 
+        $('span[data-valmsg-for="ConfirmEmail"]').empty();
         $('#error-confirmar-email-requerido').hide();
         $('#error-confirmar-email-coincidencia').hide();
 
@@ -35,6 +37,7 @@
     $('#txtUsuario').on('input blur', function () {
         let val = $(this).val().trim();
 
+        $('span[data-valmsg-for="Username"]').empty();
         $('#error-usuario-requerido').hide();
         $('#error-usuario-largo').hide();
         $('#error-usuario-seguridad').hide();
@@ -52,6 +55,7 @@
     });
 
     $('#txtNombre').on('input blur', function () {
+        $('span[data-valmsg-for="Nombre"]').empty();
         if ($(this).val().trim() === "") {
             $('#error-nombre-requerido').show();
         } else {
@@ -60,6 +64,7 @@
     });
 
     $('#txtApellido').on('input blur', function () {
+        $('span[data-valmsg-for="Apellido"]').empty();
         if ($(this).val().trim() === "") {
             $('#error-apellido-requerido').show();
         } else {
@@ -70,6 +75,7 @@
     $('#txtPassword').on('input blur', function () {
         let val = $(this).val();
 
+        $('span[data-valmsg-for="Password"]').empty();
         $('#error-password-requerido').hide();
         $('#error-password-largo').hide();
         $('#error-password-seguridad').hide();
@@ -92,6 +98,7 @@
         let val = $(this).val();
         let original = $('#txtPassword').val();
 
+        $('span[data-valmsg-for="ConfirmPassword"]').empty();
         $('#error-confirmar-password-requerido').hide();
         $('#error-confirmar-password-coincidencia').hide();
 

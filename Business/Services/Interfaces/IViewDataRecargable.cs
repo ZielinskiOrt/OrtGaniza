@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Enums
+namespace Business.Services.Interfaces
 {
-    public enum TipoRolProyecto
+    public interface IViewDataRecargable
     {
-        Miembro = 1,
-        Lider = 2,
-        Admin = 3
+        void CargarViewData();
     }
+
 }

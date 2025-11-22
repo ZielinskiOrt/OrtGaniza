@@ -9,7 +9,7 @@ namespace Business
         public MappingProfile()
         {
             CreateMap<Usuario, UsuarioDTO>().ReverseMap();
-
+            CreateMap<Proyecto, ProyectoDTO>().ReverseMap();
 
         }
     }
