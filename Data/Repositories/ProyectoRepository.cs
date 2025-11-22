@@ -92,5 +92,9 @@ namespace Data.Repositories
                    .ToList();
         }
 
+        public List<MiembroProyecto> GetMiembrosByProyectoId(Guid proyectoId)
+        {
+            return _db.MiembroProyecto.Where(mp => mp.ProyectoId == proyectoId).ToList();
+        }
     }
 }

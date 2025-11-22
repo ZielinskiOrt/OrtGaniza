@@ -51,7 +51,7 @@ namespace Business.Services
 
         public ProyectoDTO Get(Guid id)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<ProyectoDTO>(_proyectoRepository.Get(id));
         }
 
         public List<ProyectoResponseDTO> GetByUserID(Guid userId)
@@ -75,6 +75,11 @@ namespace Business.Services
         public void Update(ProyectoDTO proyectoDTO)
         {
             throw new NotImplementedException();
+        }
+
+        public List<MiembroProyectoDTO> GetMiembrosByProyectoId(Guid proyectoId)
+        {
+            return _mapper.Map<List<MiembroProyectoDTO>>(_proyectoRepository.GetMiembrosByProyectoId(proyectoId));
         }
     }
 }

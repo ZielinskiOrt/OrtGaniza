@@ -1,0 +1,94 @@
+﻿@model ProyectoEditarModel
+@{
+    // Cambiar el título para reflejar la acción de edición y mostrar el nombre del proyecto
+    ViewData["Title"] = $"Editar Proyecto: {Model.Nombre}";
+
+    List<UsuarioModel> usuariosDisponibles = ViewData["UsuariosDisponibles"] as List<UsuarioModel>;
+    SelectList usuariosSelectList = new SelectList(
+         usuariosDisponibles,
+         "UserId",
+         "UserName"
+    );
+
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-9 col-sm-12">
+
+            <div class="card shadow-lg border-0 rounded-5">
+                <div class="card-body p-4 p-md-5">
+
+                    <h2 class="card-title text-center mb-4 pb-2 border-bottom text-primary">
+                        <i class="bi bi-pencil-square me-2"></i> @ViewData["Title"]
+                    </h2>
+
+                    <form asp-action="EditarProyecto" method="post" novalidate id="formulario-editar-proyecto">
+
+                        <input type="hidden" asp-for="ProyectoId" />
+
+                        <input type="hidden" asp-for="UserId" />
+                        <input type="hidden" asp-for="NombrePropietario" />
+
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4" role="alert"></div>
+
+                        <h4 class="mb-3 text-secondary">Detalles</h4>
+
+                        <div class="mb-4">
+                            <label asp-for="Nombre" class="form-label fw-bold">Nombre del Proyecto</label>
+                            <input asp-for="Nombre" class="form-control form-control-lg" id="txtNombre" placeholder="EJ: Rediseño Web Principal" />
+                            <span asp-validation-for="Nombre" class="text-danger small"></span>
+
+                            <small id="error-nombre-requerido" class="text-danger fw-bold" style="display:none;">El nombre es requerido.</small>
+                            <small id="error-nombre-largo" class="text-danger fw-bold" style="display:none;">Debe tener máximo 50 caracteres.</small>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Descripcion" class="form-label fw-bold">Descripción</label>
+                            <textarea asp-for="Descripcion" class="form-control" rows="4" id="txtDescripcion" placeholder="Breve resumen de los objetivos del proyecto."></textarea>
+                            <span asp-validation-for="Descripcion" class="text-danger small"></span>
+
+                            <small id="error-descripcion-requerida" class="text-danger fw-bold" style="display:none;">La descripción es requerida.</small>
+                            <small id="error-descripcion-largo" class="text-danger fw-bold" style="display:none;">Debe tener máximo 100 caracteres.</small>
+                        </div>
+
+                        <hr class="my-5">
+
+                        <h4 class="mb-3 text-secondary">Equipo</h4>
+
+                        <div class="mb-4">
+                            <label asp-for="UserId" class="form-label fw-bold">Cambiar Responsable</label>
+
+                            <select asp-for="UserId" asp-items="usuariosSelectList" class="form-select form-control-lg" id="selectResponsable">
+                                <option value="">-- Selecciona un Responsable --</option>
+                            </select>
+
+                            <span asp-validation-for="UserId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="MiembrosIds" class="form-label fw-bold">Miembros del Equipo</label>
+
+                            <select multiple asp-for="MiembrosIds" asp-items="usuariosSelectList" class="form-select form-control-lg" data-placeholder="Selecciona uno o más miembros..." id="selectMiembros"></select>
+
+                            <span asp-validation-for="MiembrosIds" class="text-danger small"></span>
+
+                            <small id="error-miembros-requeridos" class="text-danger fw-bold" style="display:none;">Debes seleccionar al menos un miembro del equipo.</small>
+                        </div>
+
+                        <div class="d-grid mt-5">
+                            <button type="submit" class="btn btn-warning btn-lg rounded-pill">
+                                <i class="bi bi-save-fill me-2"></i> Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="~/js/crear-proyecto.js"></script>
+}

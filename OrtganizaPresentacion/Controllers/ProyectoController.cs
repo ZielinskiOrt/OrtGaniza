@@ -60,6 +60,23 @@ namespace OrtganizaPresentacion.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public ActionResult EditarProyecto(Guid proyectoId)
+        {
+            ProyectoEditarModel model = new ProyectoEditarModel();
+            try
+            {
+                model = _mapper.Map<ProyectoEditarModel>(_proyectoService.Get(proyectoId));
+                ViewData["UsuariosDisponibles"] = _mapper.Map<List<UsuarioModel>>(_usuarioService.GetAll());
+                model.MiembrosIds = _proyectoService.GetMiembrosByProyectoId(proyectoId).Select(p => p.UserId).ToList();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, MSG_ERROR_GENERAL);
+            }
+            return View(model);
+        }
+
         [HttpPost]
         public ActionResult CrearProyecto(ProyectoModel proyectoModel)
         {

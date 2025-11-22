@@ -11,6 +11,7 @@ namespace OrtganizaPresentacion
             CreateMap<UsuarioDTO, UsuarioModel>().ReverseMap();
             CreateMap<ProyectoModel, ProyectoDTO>().ReverseMap();
             CreateMap<ProyectoModel, ProyectoResponseDTO>().ReverseMap();
+            CreateMap<ProyectoEditarModel, ProyectoDTO>().ReverseMap();
         }
     }
 }
