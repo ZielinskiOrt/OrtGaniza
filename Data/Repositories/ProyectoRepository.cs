@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Data.Repositories.Interfaces;
 using Entities.Entities;
 using Entities.Enums;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Repositories
@@ -81,5 +82,15 @@ namespace Data.Repositories
         {
             return _db.Proyectos.Any(p => p.Nombre == nombre);
         }
+
+        public List<MiembroProyecto> GetMiembrosByUserId(Guid userId)
+        {
+            return _db.MiembroProyecto
+                   .Include(m => m.Proyecto)
+                   .Include(m => m.Usuario)
+                   .Where(m => m.UserId == userId)
+                   .ToList();
+        }
+
     }
 }

@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entities.Enums;
 
 namespace Business.DTO
 {
-    public class ProyectoDTO
+    public class ProyectoResponseDTO
     {
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
-        public Guid UserId { get; set; }
+        public string NombrePropietario { get; set; }
 
-        public List<Guid> MiembrosIds { get; set; } = new List<Guid>();
+        public TipoRolProyecto TipoRolProyecto { get; set; }
 
+        public int CantidadMiembros { get; set; }
     }
 }

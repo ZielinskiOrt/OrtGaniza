@@ -1,8 +1,10 @@
-﻿using AutoMapper;
+﻿using System.Runtime.Intrinsics.X86;
+using AutoMapper;
 using Business.CustomExceptions;
 using Business.DTO;
 using Business.Services;
 using Business.Services.Interfaces;
+using Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
 using OrtganizaPresentacion.Models;
 
@@ -27,7 +29,17 @@ namespace OrtganizaPresentacion.Controllers
 
         public ActionResult Index(Guid UserId)
         {
-            return View();
+            List<ProyectoModel> model = new List<ProyectoModel>();
+            try
+            {
+                model = _mapper.Map<List<ProyectoModel>>(_proyectoService.GetByUserID(this._userId.Value));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, MSG_ERROR_GENERAL);
+            }
+            return View(model);
+
         }
 
         [HttpGet]
@@ -38,7 +50,7 @@ namespace OrtganizaPresentacion.Controllers
             try
             {
                 model.UserId = this._userId.Value;
-                model.PropietarioNombre = _usuarioService.Get(this._userId.Value).Nombre;
+                model.NombrePropietario = _usuarioService.Get(this._userId.Value).Nombre;
                 ViewData["UsuariosDisponibles"] = _mapper.Map<List<UsuarioModel>>(_usuarioService.GetAll());
             }
             catch (Exception ex)

@@ -22,9 +22,9 @@ namespace Entities.Entities
         public TipoRolProyecto TipoRol { get; set; }
 
         [ForeignKey("ProyectoId")]
-        public Proyecto Proyecto { get; set; }
+        public virtual Proyecto Proyecto { get; set; }
 
         [ForeignKey("UserId")]
-        public Usuario Usuario { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

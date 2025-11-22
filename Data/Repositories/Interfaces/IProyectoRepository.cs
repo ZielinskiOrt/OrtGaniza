@@ -16,5 +16,7 @@ namespace Data.Repositories.Interfaces
         void Update(Proyecto Proyecto);
         Proyecto Get(Guid id);
         bool ExisteUsuario(Guid userId, Guid proyectoId);
+
+        List<MiembroProyecto> GetMiembrosByUserId(Guid userId);
     }
 }

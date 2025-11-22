@@ -13,7 +13,7 @@ namespace Business.Services.Interfaces
         void Update(ProyectoDTO proyectoDTO);
         ProyectoDTO Get(Guid id);
 
-        List<ProyectoDTO> GetByUserID(Guid userId);
+        List<ProyectoResponseDTO> GetByUserID(Guid userId);
 
 
     }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Entities.Enums;
 
 namespace OrtganizaPresentacion.Models
 {
@@ -15,9 +16,9 @@ namespace OrtganizaPresentacion.Models
         [MaxLength(100, ErrorMessage = "Debe tener maximo 100 caracteres.")]
         public string Descripcion { get; set; }
         public Guid UserId { get; set; }
-        public string PropietarioNombre{ get; set; }
+        public string NombrePropietario { get; set; }
         public int CantidadMiembros { get; set; }
-        public bool LoginEsPropietario { get; set; }
+        public TipoRolProyecto TipoRolProyecto { get; set; }
 
         public List<Guid> MiembrosIds { get; set; } = new List<Guid>();
     }

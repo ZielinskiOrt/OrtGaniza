@@ -7,6 +7,7 @@ using AutoMapper;
 using Business.CustomExceptions;
 using Business.DTO;
 using Business.Services.Interfaces;
+using Data.Repositories;
 using Data.Repositories.Interfaces;
 using Entities.Entities;
 
@@ -53,9 +54,22 @@ namespace Business.Services
             throw new NotImplementedException();
         }
 
-        public List<ProyectoDTO> GetByUserID(Guid userId)
+        public List<ProyectoResponseDTO> GetByUserID(Guid userId)
         {
-            throw new NotImplementedException();
+            List<MiembroProyecto> miembros = _proyectoRepository.GetMiembrosByUserId(userId);
+
+            List<ProyectoResponseDTO> proyectos = new List<ProyectoResponseDTO>();
+            foreach (MiembroProyecto miembro in miembros)
+            {
+                ProyectoResponseDTO proyectoDTO = _mapper.Map<ProyectoResponseDTO>(miembro.Proyecto);
+                proyectoDTO.NombrePropietario = miembro.Usuario.UserName;
+                proyectoDTO.TipoRolProyecto = miembro.TipoRol;
+                proyectoDTO.CantidadMiembros = miembro.Proyecto.Miembros.Count;
+
+                proyectos.Add(proyectoDTO);
+            }
+
+            return proyectos;
         }
 
         public void Update(ProyectoDTO proyectoDTO)

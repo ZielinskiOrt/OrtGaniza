@@ -1,4 +1,5 @@
-﻿@model List<ProyectoModel>
+﻿@using Entities.Enums
+@model List<ProyectoModel>
 @{
     ViewData["Title"] = "Mis Proyectos";
 }
@@ -30,14 +31,14 @@
                                     <td>@proyecto.</td>
                                     <td>@proyecto.Descripcion</td>
                                     <td>
-                                        @if (proyecto.LoginEsPropietario)
+                                        @if (proyecto.TipoRolProyecto == TipoRolProyecto.Lider)
                                         {
                                             <span class="fw-bold">Tú</span>
                                             <span class="badge bg-secondary-subtle text-secondary">(Propietario)</span>
                                         }
                                         else
                                         {
-                                            @proyecto.PropietarioNombre
+                                            @proyecto.NombrePropietario
                                         }
                                     </td>
                                     <td>
