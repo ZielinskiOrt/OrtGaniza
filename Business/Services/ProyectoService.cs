@@ -7,6 +7,7 @@ using AutoMapper;
 using Business.CustomExceptions;
 using Business.DTO;
 using Business.Services.Interfaces;
+using Business.Validators;
 using Data.Repositories;
 using Data.Repositories.Interfaces;
 using Entities.Entities;
@@ -17,33 +18,19 @@ namespace Business.Services
     {
         private readonly IMapper _mapper;
         private readonly IProyectoRepository _proyectoRepository;
-        private const string MSG_ERROR_USUARIO_EXISTENTE = "Error usuario existente";
-        private const string MSG_ERROR_USUARIO_Y_LIDER_EXISTENTE = "El lider no puede ser un usuario colaborador";
-        private const string MSG_ERROR_PROYECTO_EXISTENTE = "Error ya existe un proyecto con el mismo nombre";
-        public ProyectoService(IMapper mapper, IProyectoRepository proyectoRepository) 
+        private readonly IProyectoServiceValidator _validator;
+        public ProyectoService(IMapper mapper, IProyectoRepository proyectoRepository, IProyectoServiceValidator validator) 
         { 
             _mapper = mapper;
             _proyectoRepository = proyectoRepository;
+            _validator = validator;
         }
         public Guid CargarProyecto(ProyectoDTO proyectoDTO)
-        {
-            if (_proyectoRepository.Existe(proyectoDTO.Nombre))
-            {
-                throw new ProyectoException(MSG_ERROR_PROYECTO_EXISTENTE);
-            } else if (proyectoDTO.MiembrosIds.Contains(proyectoDTO.UserId))
-            {
-                throw new ProyectoException(MSG_ERROR_USUARIO_Y_LIDER_EXISTENTE);
-            }                
+        {   
+            _validator.CrearProyectoValidation(proyectoDTO);
+
             Proyecto proyecto = _mapper.Map<Proyecto>(proyectoDTO);
             Guid proyectoId = _proyectoRepository.CargarProyecto(proyecto);
-
-            foreach (Guid userId in proyectoDTO.MiembrosIds)
-            {
-                if (_proyectoRepository.ExisteUsuario(proyectoDTO.UserId,proyectoId))
-                {
-                    throw new ProyectoException(MSG_ERROR_USUARIO_EXISTENTE);
-                }
-            }
             _proyectoRepository.CargarMiembros(proyectoId,proyectoDTO.MiembrosIds);
             _proyectoRepository.CargarLider(proyectoId, proyectoDTO.UserId);
             return proyectoId;
@@ -74,12 +61,35 @@ namespace Business.Services
 
         public void Update(ProyectoDTO proyectoDTO)
         {
-            throw new NotImplementedException();
+            _validator.EditarProyectoValidation(proyectoDTO);
+            List<Guid> miembrosNuevos = new List<Guid>(proyectoDTO.MiembrosIds);
+            _proyectoRepository.CargarLider(proyectoDTO.ProyectoId, proyectoDTO.UserId);
+            List<MiembroProyecto> miembrosActuales = _proyectoRepository.GetMiembrosByProyectoId(proyectoDTO.ProyectoId,true);
+            foreach (MiembroProyecto miembro in miembrosActuales)
+            {
+                miembro.Baja = true;
+                foreach (Guid id in proyectoDTO.MiembrosIds)
+                {
+                    if (miembro.UserId == id)
+                    {
+                        miembro.Baja = false;
+                        miembrosNuevos.Remove(id);
+                    }
+                }
+            }
+            _proyectoRepository.ActualizarUsuarios(miembrosActuales);
+            _proyectoRepository.CargarMiembros(proyectoDTO.ProyectoId, miembrosNuevos);
+            _proyectoRepository.Update(_mapper.Map<Proyecto>(proyectoDTO));
         }
 
         public List<MiembroProyectoDTO> GetMiembrosByProyectoId(Guid proyectoId)
         {
             return _mapper.Map<List<MiembroProyectoDTO>>(_proyectoRepository.GetMiembrosByProyectoId(proyectoId));
+        }
+
+        public MiembroProyectoDTO GetLiderProyecto(Guid proyectoId)
+        {
+            return _mapper.Map<MiembroProyectoDTO>(_proyectoRepository.GetLiderProyecto(proyectoId));
         }
     }
 }

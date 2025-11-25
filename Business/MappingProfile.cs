@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.DTO;
+using Business.Validators;
 using Entities.Entities;
 
 namespace Business

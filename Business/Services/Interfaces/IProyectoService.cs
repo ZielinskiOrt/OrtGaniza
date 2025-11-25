@@ -17,6 +17,8 @@ namespace Business.Services.Interfaces
         List<ProyectoResponseDTO> GetByUserID(Guid userId);
 
         List<MiembroProyectoDTO> GetMiembrosByProyectoId(Guid proyectoId);
+       
+        MiembroProyectoDTO GetLiderProyecto(Guid proyectoId);
 
 
     }

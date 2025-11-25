@@ -29,28 +29,48 @@ namespace Data.Repositories
             {
                 miembro.TipoRol = TipoRolProyecto.Miembro;
             }
-            _db.MiembroProyecto.Add(new MiembroProyecto
-            {
-                ProyectoId = proyectoId,
-                UserId = userId,
-                Baja = false,
-                TipoRol = TipoRolProyecto.Lider
-            });
-            _db.SaveChanges();
-        }
 
-        public void CargarMiembros(Guid proyectoId, List<Guid> userIds)
-        {
-            foreach (Guid userId in userIds) {
+            MiembroProyecto miembroPromovido = _db.MiembroProyecto.Where(mp => mp.UserId == userId && mp.ProyectoId == proyectoId).FirstOrDefault();
+            if (miembroPromovido == null)
+            {
                 _db.MiembroProyecto.Add(new MiembroProyecto
                 {
                     ProyectoId = proyectoId,
                     UserId = userId,
                     Baja = false,
-                    TipoRol = TipoRolProyecto.Miembro
+                    TipoRol = TipoRolProyecto.Lider
                 });
             }
+            else
+            {
+                miembroPromovido.TipoRol = TipoRolProyecto.Lider;
+                _db.Update(miembroPromovido);
+            }
+            
+            _db.SaveChanges();
+        }
 
+        public void CargarMiembros(Guid proyectoId, List<Guid> userIds)
+        {
+            if (userIds.Count > 0)
+            {
+                foreach (Guid userId in userIds)
+                {
+                    _db.MiembroProyecto.Add(new MiembroProyecto
+                    {
+                        ProyectoId = proyectoId,
+                        UserId = userId,
+                        Baja = false,
+                        TipoRol = TipoRolProyecto.Miembro
+                    });
+                }
+
+                _db.SaveChanges();
+            }
+        }
+
+        public void ActualizarUsuarios(List<MiembroProyecto> miembros) {
+            _db.MiembroProyecto.UpdateRange(miembros);
             _db.SaveChanges();
         }
 
@@ -75,12 +95,18 @@ namespace Data.Repositories
 
         public void Update(Proyecto Proyecto)
         {
-            throw new NotImplementedException();
+            _db.Update(Proyecto);
+            _db.SaveChanges(true);
         }
 
-        public bool Existe(string nombre)
+        public bool Existe(string nombre, Guid? proyectoId = null)
         {
-            return _db.Proyectos.Any(p => p.Nombre == nombre);
+            bool respuesta = false;
+            if(proyectoId == null)
+                respuesta = _db.Proyectos.Any(p => p.Nombre == nombre);
+            else
+                respuesta = _db.Proyectos.Any(p => p.Nombre == nombre && p.ProyectoId != proyectoId);
+            return respuesta;
         }
 
         public List<MiembroProyecto> GetMiembrosByUserId(Guid userId)
@@ -92,9 +118,23 @@ namespace Data.Repositories
                    .ToList();
         }
 
-        public List<MiembroProyecto> GetMiembrosByProyectoId(Guid proyectoId)
+        public List<MiembroProyecto> GetMiembrosByProyectoId(Guid proyectoId, bool incluirBajas = false)
         {
-            return _db.MiembroProyecto.Where(mp => mp.ProyectoId == proyectoId).ToList();
+            List<MiembroProyecto> miembros;
+            if (incluirBajas)
+            {
+                miembros = _db.MiembroProyecto.Where(mp => mp.ProyectoId == proyectoId && mp.TipoRol == TipoRolProyecto.Miembro).ToList();
+            }
+            else
+            {
+                miembros = _db.MiembroProyecto.Where(mp => mp.ProyectoId == proyectoId && mp.TipoRol == TipoRolProyecto.Miembro && mp.Baja == false).ToList();
+            }
+            return miembros;
+        }
+
+        public MiembroProyecto GetLiderProyecto(Guid proyectoId)
+        {
+            return _db.MiembroProyecto.Where(mp => mp.ProyectoId == proyectoId && mp.TipoRol == TipoRolProyecto.Lider && !mp.Baja).FirstOrDefault();
         }
     }
 }

@@ -7,6 +7,7 @@ using Business.Services.Interfaces;
 using Business.Services;
 using Business;
 using OrtganizaPresentacion;
+using Business.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,7 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IProyectoService, ProyectoService>();
 builder.Services.AddScoped<IProyectoRepository, ProyectoRepository>();
+builder.Services.AddScoped<IProyectoServiceValidator, ProyectoServiceValidator>();
 
 builder.Services.AddScoped<IWebRoleRepository, WebRoleRepository>();
 // Add services to the container.

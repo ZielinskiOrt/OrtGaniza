@@ -9,7 +9,7 @@ namespace Data.Repositories.Interfaces
 {
     public interface IProyectoRepository
     {
-        bool Existe(string nombre);
+        bool Existe(string nombre, Guid? proyectoId);
         Guid CargarProyecto(Proyecto proyecto);
         void CargarMiembros(Guid proyectoId, List<Guid> userIds);
         void CargarLider(Guid proyectoId, Guid userId);
@@ -17,6 +17,8 @@ namespace Data.Repositories.Interfaces
         Proyecto Get(Guid id);
         bool ExisteUsuario(Guid userId, Guid proyectoId);
         List<MiembroProyecto> GetMiembrosByUserId(Guid userId);
-        List<MiembroProyecto> GetMiembrosByProyectoId(Guid proyectoId);
+        List<MiembroProyecto> GetMiembrosByProyectoId(Guid proyectoId, bool incluirBajas = false);
+        void ActualizarUsuarios(List<MiembroProyecto> miembros);
+        MiembroProyecto GetLiderProyecto(Guid proyectoId);
     }
 }

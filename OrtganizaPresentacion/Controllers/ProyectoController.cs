@@ -67,6 +67,7 @@ namespace OrtganizaPresentacion.Controllers
             try
             {
                 model = _mapper.Map<ProyectoEditarModel>(_proyectoService.Get(proyectoId));
+                model.UserId = _proyectoService.GetLiderProyecto(proyectoId).UserId;
                 ViewData["UsuariosDisponibles"] = _mapper.Map<List<UsuarioModel>>(_usuarioService.GetAll());
                 model.MiembrosIds = _proyectoService.GetMiembrosByProyectoId(proyectoId).Select(p => p.UserId).ToList();
             }
@@ -75,6 +76,34 @@ namespace OrtganizaPresentacion.Controllers
                 ModelState.AddModelError(string.Empty, MSG_ERROR_GENERAL);
             }
             return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult EditarProyecto(ProyectoEditarModel proyectoModel)
+        {
+            try
+            {
+                if (proyectoModel.MiembrosIds.Count > 0)
+                {
+                    ProyectoDTO proyectoDTO = _mapper.Map<ProyectoDTO>(proyectoModel);
+                    _proyectoService.Update(proyectoDTO);
+                }
+                else
+                {
+                    throw new ProyectoException(MSG_ERROR_MIEMBROS);
+                }
+
+            }
+            catch (ProyectoException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, MSG_ERROR_GENERAL);
+            }
+            ViewData["UsuariosDisponibles"] = _mapper.Map<List<UsuarioModel>>(_usuarioService.GetAll());
+            return View(proyectoModel);
         }
 
         [HttpPost]
