@@ -18,5 +18,6 @@ namespace Data.Repositories.Interfaces
         void InsertRange(List<Usuario> usuarios);
         void Update(Usuario usuario);
         void Delete(Guid id);
+        Usuario Login(string username, string contrasena);
     }
 }

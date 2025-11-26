@@ -13,5 +13,7 @@ namespace Business.DTO
         public Guid UserId { get; set; }
         public bool Baja { get; set; } = false;
         public TipoRolProyecto TipoRol { get; set; }
+
+        public UsuarioDTO Usuario { get; set; }
     }
 }

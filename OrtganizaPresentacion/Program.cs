@@ -8,6 +8,7 @@ using Business.Services;
 using Business;
 using OrtganizaPresentacion;
 using Business.Validators;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,13 +24,15 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IProyectoService, ProyectoService>();
 builder.Services.AddScoped<IProyectoRepository, ProyectoRepository>();
+builder.Services.AddScoped<ITareaService, TareaService>();
+builder.Services.AddScoped<ITareaRepository, TareaRepository>();
 builder.Services.AddScoped<IProyectoServiceValidator, ProyectoServiceValidator>();
 
 builder.Services.AddScoped<IWebRoleRepository, WebRoleRepository>();
 // Add services to the container.
 builder.Services.AddControllersWithViews(options =>
 {
-    options.Filters.Add(new ModelValidationFilter());
+    options.Filters.Add(new TypeFilterAttribute(typeof(ModelValidationFilter)));
 });
 
 builder.Services.AddAutoMapper(

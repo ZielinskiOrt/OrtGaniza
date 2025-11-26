@@ -1,4 +1,5 @@
-﻿using Business.CustomExceptions;
+﻿using AutoMapper;
+using Business.CustomExceptions;
 using Business.DTO;
 using Business.Services.Interfaces;
 using Data.Repositories.Interfaces;
@@ -14,7 +15,10 @@ namespace OrtganizaPresentacion.Controllers
         private readonly string _keyErrorUsuario = "ERROR_USUARIO_BACK";
         private readonly string _error = "Error inesperado";
         private readonly ICookieService _cookieService;
-        public RegistroController(IUsuarioService usuarioService, ICookieService cookieService) { 
+        private readonly IMapper _mapper;
+        public RegistroController(IUsuarioService usuarioService, ICookieService cookieService,IMapper mapper) 
+        {
+            this._mapper = mapper;
             this._usuarioService = usuarioService;
             this._cookieService = cookieService;
         }
@@ -45,7 +49,7 @@ namespace OrtganizaPresentacion.Controllers
             {
                 Guid id = _usuarioService.CargarUsuario(usuarioDTO);
                 _cookieService.GuardarUsuario(id);
-                return RedirectToAction("index","Proyecto");
+                return RedirectToAction("Index","Proyecto");
             }
             catch (UserException ex)
             {
@@ -59,6 +63,27 @@ namespace OrtganizaPresentacion.Controllers
 
         }
 
-      
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(LoginModel model)
+        {
+            try
+            {
+                Guid id = _usuarioService.Login(_mapper.Map<LoginDTO>(model));
+                _cookieService.GuardarUsuario(id);
+            }
+            catch (UserException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(model);
+            }
+
+            return RedirectToAction("Index","Proyecto");
+        }
+
     }
 }

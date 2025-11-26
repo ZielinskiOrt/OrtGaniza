@@ -18,6 +18,7 @@ namespace Business.Services
         private readonly IWebRoleRepository _webRoleRepository;
         private readonly IMapper _mapper;
         private const string MSG_ERROR_INEXISTENTE = "Error el usuario ya existe";
+        private const string MSG_ERROR_CREDENCIALES = "Error al ingresar credenciales";
         public UsuarioService(IUsuarioRepository usuarioRepository, IWebRoleRepository webRoleRepository, IMapper mapper) 
         {
             this._mapper = mapper;
@@ -53,6 +54,17 @@ namespace Business.Services
         public List<UsuarioDTO> GetAll()
         {
             return _mapper.Map<List<UsuarioDTO>>(_usuariosRepository.GetAll());
+        }
+
+        public Guid Login(LoginDTO login)
+        {
+            Usuario result = _usuariosRepository.Login(login.UserId, login.Contrasena);
+            if (result == null)
+            {
+                throw new UserException(MSG_ERROR_CREDENCIALES);
+            }
+
+            return result.UserId;
         }
     }
 }

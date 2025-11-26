@@ -6,6 +6,8 @@ namespace OrtganizaPresentacion.Models
     public class ProyectoModel
     {
 
+        public Guid ProyectoId { get; set; }
+
         [Required(ErrorMessage = "El nombre es requerido")]
         [MinLength(1, ErrorMessage = "Debe tener al menos 1 caracteres.")]
         [MaxLength(50, ErrorMessage = "Debe tener maximo 50 caracteres.")]

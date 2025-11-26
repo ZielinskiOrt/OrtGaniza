@@ -15,7 +15,6 @@ namespace Data.Repositories
     {
 
         private readonly OrtganizaDbContext _db;
-        private const string MSG_ERROR_MIEMBRO_EXISTENTE = "Error ya existe el usuario";
         public ProyectoRepository(OrtganizaDbContext db)
         {
             _db = db;
@@ -65,12 +64,16 @@ namespace Data.Repositories
                     });
                 }
 
-                _db.SaveChanges();
+                _db.SaveChanges(true);
             }
         }
 
         public void ActualizarUsuarios(List<MiembroProyecto> miembros) {
-            _db.MiembroProyecto.UpdateRange(miembros);
+            foreach (var miembro in miembros)
+            {
+                _db.Entry(miembro).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            }
+
             _db.SaveChanges();
         }
 
@@ -93,9 +96,9 @@ namespace Data.Repositories
             return _db.MiembroProyecto.Any(mp => mp.UserId == userId && mp.ProyectoId == proyectoId);
         }
 
-        public void Update(Proyecto Proyecto)
+        public void Update(Proyecto proyecto)
         {
-            _db.Update(Proyecto);
+            _db.Entry(proyecto).State = EntityState.Modified;
             _db.SaveChanges(true);
         }
 
@@ -113,6 +116,7 @@ namespace Data.Repositories
         {
             return _db.MiembroProyecto
                    .Include(m => m.Proyecto)
+                   .ThenInclude(p => p.Miembros)
                    .Include(m => m.Usuario)
                    .Where(m => m.UserId == userId)
                    .ToList();
@@ -123,18 +127,44 @@ namespace Data.Repositories
             List<MiembroProyecto> miembros;
             if (incluirBajas)
             {
-                miembros = _db.MiembroProyecto.Where(mp => mp.ProyectoId == proyectoId && mp.TipoRol == TipoRolProyecto.Miembro).ToList();
+                miembros = _db.MiembroProyecto.Where(mp => mp.ProyectoId == proyectoId && mp.TipoRol == TipoRolProyecto.Miembro)
+                           .Include(m => m.Proyecto)
+                           .ThenInclude(p => p.Miembros)
+                           .ThenInclude(m => m.Usuario)
+                           .ToList();
             }
             else
             {
-                miembros = _db.MiembroProyecto.Where(mp => mp.ProyectoId == proyectoId && mp.TipoRol == TipoRolProyecto.Miembro && mp.Baja == false).ToList();
+                miembros = _db.MiembroProyecto.Where(mp => mp.ProyectoId == proyectoId && mp.TipoRol == TipoRolProyecto.Miembro && mp.Baja == false)
+                           .Include(m => m.Proyecto)
+                           .ThenInclude(p => p.Miembros)
+                           .ThenInclude(m => m.Usuario)
+                           .ToList();
             }
             return miembros;
+        }
+
+        public List<MiembroProyecto> GetMiembrosParaActualizar(Guid proyectoId, bool incluirBajas = false)
+        {
+            var query = _db.MiembroProyecto
+                           .Where(mp => mp.ProyectoId == proyectoId && mp.TipoRol == TipoRolProyecto.Miembro);
+
+            if (!incluirBajas)
+            {
+                query = query.Where(mp => mp.Baja == false);
+            }
+
+            return query.ToList();
         }
 
         public MiembroProyecto GetLiderProyecto(Guid proyectoId)
         {
             return _db.MiembroProyecto.Where(mp => mp.ProyectoId == proyectoId && mp.TipoRol == TipoRolProyecto.Lider && !mp.Baja).FirstOrDefault();
+        }
+
+        public int GetMiembrosActivos(Guid proyectoId)
+        {
+            return _db.MiembroProyecto.Where(p => p.ProyectoId == proyectoId).Count();
         }
     }
 }

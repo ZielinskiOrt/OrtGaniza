@@ -8,7 +8,8 @@
     <div class="card shadow-sm border-0 rounded-4">
         <div class="card-header bg-white p-4 d-flex justify-content-between align-items-center border-bottom-0">
             <h2 class="card-title mb-0">@ViewData["Title"]</h2>
-            <a href="#" class="btn btn-primary btn-sm rounded-pill px-3">+ Crear Proyecto</a>
+            <a asp-controller="Proyecto" asp-action="CrearProyecto" class="btn btn-primary btn-sm rounded-pill px-3">+ Crear Proyecto</a>
+
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -28,7 +29,7 @@
                             foreach (ProyectoModel proyecto in Model)
                             {
                                 <tr>
-                                    <td>@proyecto.</td>
+                                    <td>@proyecto.Nombre</td>
                                     <td>@proyecto.Descripcion</td>
                                     <td>
                                         @if (proyecto.TipoRolProyecto == TipoRolProyecto.Lider)
@@ -45,12 +46,24 @@
                                         <span class="badge bg-info-subtle text-info">@proyecto.CantidadMiembros</span>
                                     </td>
                                     <td>
-                                        <a href="#" class="text-decoration-none">Ver Detalles</a>
-                                        <a href="#" class="text-secondary ms-2" aria-label="Editar">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.105l-4 1a.5.5 0 0 1-.65-.65l1-4a.5.5 0 0 1 .105-.168l10-10zm.708 3l-3-3L1.92 12.062 1 15l2.938-.92zM11.5 5a.5.5 0 0 0-1 0v1h1z" />
-                                            </svg>
+                                        <a asp-controller="Tarea"
+                                           asp-action="Index"
+                                           asp-route-proyectoId="@proyecto.ProyectoId"
+                                           class="btn btn-sm btn-outline-primary me-2"
+                                           title="Ver Detalle de Tareas">
+                                            <i class="bi bi-list-task me-1"></i> Ver Detalle
                                         </a>
+
+                                        @if (proyecto.TipoRolProyecto == TipoRolProyecto.Lider)
+                                        {
+                                            <a asp-controller="Proyecto"
+                                               asp-action="EditarProyecto"
+                                               asp-route-proyectoId="@proyecto.ProyectoId"
+                                               class="text-secondary"
+                                               aria-label="Editar">
+                                                <i class="bi bi-pencil-square"></i> Editar
+                                            </a>
+                                        }
                                     </td>
                                 </tr>
                             }

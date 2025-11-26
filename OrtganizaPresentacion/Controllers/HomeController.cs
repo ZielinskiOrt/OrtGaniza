@@ -15,7 +15,7 @@ namespace OrtganizaPresentacion.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Login", "Registro");
         }
 
         public IActionResult Privacy()

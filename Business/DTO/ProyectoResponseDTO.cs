@@ -9,6 +9,7 @@ namespace Business.DTO
 {
     public class ProyectoResponseDTO
     {
+        public Guid ProyectoId { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public string NombrePropietario { get; set; }

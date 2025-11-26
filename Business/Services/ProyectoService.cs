@@ -43,15 +43,15 @@ namespace Business.Services
 
         public List<ProyectoResponseDTO> GetByUserID(Guid userId)
         {
-            List<MiembroProyecto> miembros = _proyectoRepository.GetMiembrosByUserId(userId);
+            List<MiembroProyecto> miembroProyectos = _proyectoRepository.GetMiembrosByUserId(userId);
 
             List<ProyectoResponseDTO> proyectos = new List<ProyectoResponseDTO>();
-            foreach (MiembroProyecto miembro in miembros)
+            foreach (MiembroProyecto miembroProyecto in miembroProyectos)
             {
-                ProyectoResponseDTO proyectoDTO = _mapper.Map<ProyectoResponseDTO>(miembro.Proyecto);
-                proyectoDTO.NombrePropietario = miembro.Usuario.UserName;
-                proyectoDTO.TipoRolProyecto = miembro.TipoRol;
-                proyectoDTO.CantidadMiembros = miembro.Proyecto.Miembros.Count;
+                ProyectoResponseDTO proyectoDTO = _mapper.Map<ProyectoResponseDTO>(miembroProyecto.Proyecto);
+                proyectoDTO.NombrePropietario = miembroProyecto.Usuario.UserName;
+                proyectoDTO.TipoRolProyecto = miembroProyecto.TipoRol;
+                proyectoDTO.CantidadMiembros = miembroProyecto.Proyecto.Miembros.Where(m => !m.Baja).Count();
 
                 proyectos.Add(proyectoDTO);
             }
@@ -64,7 +64,7 @@ namespace Business.Services
             _validator.EditarProyectoValidation(proyectoDTO);
             List<Guid> miembrosNuevos = new List<Guid>(proyectoDTO.MiembrosIds);
             _proyectoRepository.CargarLider(proyectoDTO.ProyectoId, proyectoDTO.UserId);
-            List<MiembroProyecto> miembrosActuales = _proyectoRepository.GetMiembrosByProyectoId(proyectoDTO.ProyectoId,true);
+            List<MiembroProyecto> miembrosActuales = _proyectoRepository.GetMiembrosParaActualizar(proyectoDTO.ProyectoId,true);
             foreach (MiembroProyecto miembro in miembrosActuales)
             {
                 miembro.Baja = true;

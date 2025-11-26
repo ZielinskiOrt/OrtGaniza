@@ -27,7 +27,7 @@ namespace OrtganizaPresentacion.Controllers
             this._proyectoService = proyectoService;
         }
 
-        public ActionResult Index(Guid UserId)
+        public ActionResult Index()
         {
             List<ProyectoModel> model = new List<ProyectoModel>();
             try
@@ -92,7 +92,7 @@ namespace OrtganizaPresentacion.Controllers
                 {
                     throw new ProyectoException(MSG_ERROR_MIEMBROS);
                 }
-
+                return RedirectToAction("Index", "Proyecto");
             }
             catch (ProyectoException ex)
             {
@@ -115,6 +115,7 @@ namespace OrtganizaPresentacion.Controllers
                 {
                     ProyectoDTO proyectoDTO = _mapper.Map<ProyectoDTO>(proyectoModel);
                     _proyectoService.CargarProyecto(proyectoDTO);
+                    return RedirectToAction("Index", "Proyecto");
                 }
                 else 
                 {

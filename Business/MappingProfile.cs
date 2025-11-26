@@ -13,6 +13,8 @@ namespace Business
             CreateMap<Proyecto, ProyectoDTO>().ReverseMap();
             CreateMap<Proyecto, ProyectoResponseDTO>().ReverseMap();
             CreateMap<MiembroProyecto, MiembroProyectoDTO>().ReverseMap();
+            CreateMap<Tarea, TareaDTO>().ReverseMap();
+            CreateMap<TareaResponseDTO, Tarea>().ReverseMap();
         }
     }
 }

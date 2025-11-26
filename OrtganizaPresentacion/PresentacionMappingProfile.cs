@@ -12,6 +12,9 @@ namespace OrtganizaPresentacion
             CreateMap<ProyectoModel, ProyectoDTO>().ReverseMap();
             CreateMap<ProyectoModel, ProyectoResponseDTO>().ReverseMap();
             CreateMap<ProyectoEditarModel, ProyectoDTO>().ReverseMap();
+            CreateMap<CrearTareaModel, TareaDTO>().ReverseMap();
+            CreateMap<TareaModel, TareaResponseDTO>().ReverseMap();
+            CreateMap<LoginModel, LoginDTO>().ReverseMap();
         }
     }
 }

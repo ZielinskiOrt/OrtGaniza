@@ -73,5 +73,10 @@ namespace Data.Repositories
         {
             _db.Update(usuario);
         }
+
+        public Usuario Login(string userName, string contrasena)
+        {
+            return _db.Usuarios.Where(u => (u.UserName == userName || u.Email == userName) && u.PassWord == contrasena).FirstOrDefault();
+        }
     }
 }

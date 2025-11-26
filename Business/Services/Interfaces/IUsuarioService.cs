@@ -12,5 +12,7 @@ namespace Business.Services.Interfaces
         UsuarioDTO Get(Guid id);
         List<UsuarioDTO> GetAll();
         Guid CargarUsuario(UsuarioDTO usuarioDTO);
+
+        Guid Login(LoginDTO login);
     }
 }

@@ -20,5 +20,9 @@ namespace Data.Repositories.Interfaces
         List<MiembroProyecto> GetMiembrosByProyectoId(Guid proyectoId, bool incluirBajas = false);
         void ActualizarUsuarios(List<MiembroProyecto> miembros);
         MiembroProyecto GetLiderProyecto(Guid proyectoId);
+
+        int GetMiembrosActivos(Guid proyectoId);
+
+        List<MiembroProyecto> GetMiembrosParaActualizar(Guid proyectoId, bool incluirBajas = false);
     }
 }
