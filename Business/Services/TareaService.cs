@@ -30,12 +30,22 @@ namespace Business.Services
         public void CargarTarea(TareaDTO tareaDTO)
         {
             if (_tareaRepository.AnyByNombre(tareaDTO.Titulo))
-            {
                 throw new TareaException(MSG_ERROR_TAREA_EXISTENTE);
-            }
-            Guid tareaId = _tareaRepository.CargarTarea(_mapper.Map<Tarea>(tareaDTO));
-            _tareaRepository.CargarMiembros(tareaDTO.ResponsablesIds,tareaId);
+
+            if (tareaDTO.FechaInicio.Date < DateTime.Now.Date)
+                throw new TareaException("La fecha de inicio no puede ser anterior a la fecha actual");
+
+            if (tareaDTO.ResponsablesIds == null || tareaDTO.ResponsablesIds.Count == 0)
+                throw new TareaException("Debe asignar al menos un responsable");
+            Tarea tarea = _mapper.Map<Tarea>(tareaDTO);
+            tarea.FechaCreacion = DateTime.Now.Date;
+            tarea.FechaVencimiento = tareaDTO.FechaInicio.AddDays(tareaDTO.EstimacionDias).Date;
+            tarea.Vencida = tarea.FechaVencimiento < DateTime.Now.Date;
+            Guid tareaId = _tareaRepository.CargarTarea(tarea);
+            _tareaRepository.CargarMiembros(tareaDTO.ResponsablesIds, tareaId);
         }
+
+
 
         public List<TareaResponseDTO> GetTareasByProyectoId(Guid proyectoId)
         {
