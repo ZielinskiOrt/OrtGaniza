@@ -9,12 +9,12 @@ namespace OrtganizaPresentacion
         public PresentacionMappingProfile()
         {
             CreateMap<UsuarioDTO, UsuarioModel>().ReverseMap();
-            CreateMap<ProyectoModel, ProyectoDTO>().ReverseMap();
-            CreateMap<ProyectoModel, ProyectoResponseDTO>().ReverseMap();
-            CreateMap<ProyectoEditarModel, ProyectoDTO>().ReverseMap();
-            CreateMap<CrearTareaModel, TareaDTO>().ReverseMap();
-            CreateMap<TareaModel, TareaResponseDTO>().ReverseMap();
-            CreateMap<LoginModel, LoginDTO>().ReverseMap();
+            CreateMap<ProyectoDTO, ProyectoModel>().ReverseMap();
+            CreateMap<ProyectoDTO, ProyectoEditarModel>().ReverseMap();
+            CreateMap<ProyectoResponseDTO, ProyectoModel>().ReverseMap();
+            CreateMap<TareaResponseDTO, TareaModel>().ReverseMap();
+            CreateMap<TareaDTO, CrearTareaModel>().ReverseMap();
+            CreateMap<LoginDTO, LoginModel>().ReverseMap();
         }
     }
 }
