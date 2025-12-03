@@ -55,7 +55,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-4">
                                 <label asp-for="FechaInicio" class="form-label fw-bold">Fecha de Inicio</label>
-                                <input asp-for="FechaInicio" type="date" class="form-control" id="dtFechaInicio" />
+                                <input asp-for="FechaInicio" type="date" class="form-control" id="dtFechaInicio" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
                                 <span asp-validation-for="FechaInicio" class="text-danger small"></span>
                                 <small id="error-fecha-requerida" class="text-danger fw-bold" style="display:none;">La fecha de inicio es requerida.</small>
                             </div>

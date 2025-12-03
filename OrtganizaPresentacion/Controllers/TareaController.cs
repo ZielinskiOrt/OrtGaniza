@@ -31,6 +31,7 @@ namespace OrtganizaPresentacion.Controllers
         {
             CrearTareaModel model = new CrearTareaModel();
             model.ProyectoId = proyectoId;
+            model.FechaInicio = DateTime.Today;
             model.Usuarios = _mapper.Map<List<UsuarioModel>>(_proyectoService.GetMiembrosByProyectoId(proyectoId).Select(m => m.Usuario).ToList());
             return View(model);
         }
