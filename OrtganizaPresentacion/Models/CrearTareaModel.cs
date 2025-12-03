@@ -5,6 +5,11 @@ namespace OrtganizaPresentacion.Models
 {
     public class CrearTareaModel
     {
+        public CrearTareaModel()
+        {
+            FechaInicio = DateTime.Today;
+        }
+
         [Required(ErrorMessage = "El ID del Proyecto es requerido.")]
         public Guid ProyectoId { get; set; }
 
