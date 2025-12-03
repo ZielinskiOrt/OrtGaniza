@@ -9,9 +9,6 @@ using Entities.Enums;
 
 namespace Entities.Entities
 {
-    /// <summary>
-    /// Entidad para la tabla Tareas.
-    /// </summary>
     public class Tarea
     {
         [Key]
